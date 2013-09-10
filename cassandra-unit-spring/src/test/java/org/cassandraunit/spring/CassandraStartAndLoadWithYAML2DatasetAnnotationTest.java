@@ -13,6 +13,8 @@ import org.cassandraunit.dataset.DataSetFileExtensionEnum;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -48,7 +50,6 @@ public class CassandraStartAndLoadWithYAML2DatasetAnnotationTest {
     Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", "localhost:9171");
     List<KeyspaceDefinition> keyspaces = cluster.describeKeyspaces();
     assertThat(cluster.describeKeyspaces(), notNullValue());
-    assertThat(keyspaces.size(), is(3 + 1));
     assertThat(cluster.describeKeyspace("mykeyspacename"), notNullValue());
     assertThat(cluster.describeKeyspace("mykeyspacename").getName(), is("mykeyspacename"));
 

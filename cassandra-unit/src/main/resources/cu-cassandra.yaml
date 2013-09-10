@@ -34,7 +34,7 @@ max_hint_window_in_ms: 3600000 # one hour
 authenticator: org.apache.cassandra.auth.AllowAllAuthenticator
 
 # authorization backend, implementing IAuthority; used to limit access/provide permissions
-authority: org.apache.cassandra.auth.AllowAllAuthority
+authorizer: org.apache.cassandra.auth.AllowAllAuthorizer
 
 # The partitioner is responsible for distributing rows (by key) across
 # nodes in the cluster.  Any IPartitioner may be used, including your
@@ -131,7 +131,7 @@ row_cache_save_period: 0
 # that implements org.apache.cassandra.cache.IRowCacheProvider.
 #
 # Defaults to SerializingCacheProvider
-row_cache_provider: SerializingCacheProvider
+#row_cache_provider: SerializingCacheProvider
 
 # saved caches
 saved_caches_directory: target/embeddedCassandra/saved_caches
@@ -163,31 +163,6 @@ seed_provider:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
           - seeds: "127.0.0.1"
-
-# emergency pressure valve: each time heap usage after a full (CMS)
-# garbage collection is above this fraction of the max, Cassandra will
-# flush the largest memtables.  
-#
-# Set to 1.0 to disable.  Setting this lower than
-# CMSInitiatingOccupancyFraction is not likely to be useful.
-#
-# RELYING ON THIS AS YOUR PRIMARY TUNING MECHANISM WILL WORK POORLY:
-# it is most effective under light to moderate load, or read-heavy
-# workloads; under truly massive write load, it will often be too
-# little, too late.
-flush_largest_memtables_at: 0.75
-
-# emergency pressure valve #2: the first time heap usage after a full
-# (CMS) garbage collection is above this fraction of the max,
-# Cassandra will reduce cache maximum _capacity_ to the given fraction
-# of the current _size_.  Should usually be set substantially above
-# flush_largest_memtables_at, since that will have less long-term
-# impact on the system.  
-# 
-# Set to 1.0 to disable.  Setting this lower than
-# CMSInitiatingOccupancyFraction is not likely to be useful.
-reduce_cache_sizes_at: 0.85
-reduce_cache_capacity_to: 0.6
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -545,3 +520,4 @@ encryption_options:
     # algorithm: SunX509
     # store_type: JKS
     # cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA]
+
